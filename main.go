@@ -16,10 +16,6 @@ func main() {
 		}
 		// printAST(ast, 0)
 
-		if !validateAST(ast) {
-			continue
-		}
-
 		truthTable := solveTruthTable(ast)
 		printTruthTable(truthTable)
 	}
