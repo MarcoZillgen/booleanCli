@@ -14,7 +14,7 @@ func main() {
 		if ast == nil {
 			continue
 		}
-		// printAST(ast, 0)
+		printAST(ast, 0)
 
 		truthTable := solveTruthTable(ast)
 		printTruthTable(truthTable)

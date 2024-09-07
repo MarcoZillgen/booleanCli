@@ -1,5 +1,7 @@
 package main
 
+import "strings"
+
 type TokenType int
 
 const (
@@ -22,11 +24,10 @@ type Token struct {
 }
 
 func lexer(input string) []Token {
+	input = strings.ReplaceAll(input, " ", "")
 	tokens := []Token{}
 	for i := 0; i < len(input); i++ {
 		switch input[i] {
-		case ' ', '\t', '\n':
-			continue
 		case '&':
 			tokens = append(tokens, Token{Type: And, Value: "&"})
 		case '|':
@@ -38,8 +39,11 @@ func lexer(input string) []Token {
 			} else if i+1 < len(input) && input[i+1] == '|' {
 				tokens = append(tokens, Token{Type: Nor, Value: "!|"})
 				i++
-			} else {
+			} else if i+1 < len(input) && (isAlpha(input[i+1]) || input[i+1] == '(') {
 				tokens = append(tokens, Token{Type: Not, Value: "!"})
+			} else {
+				printError("Error: invalid token [%s] at position %d\n", string(input[i]), i)
+				return nil
 			}
 		case '^':
 			tokens = append(tokens, Token{Type: Xor, Value: "^"})
